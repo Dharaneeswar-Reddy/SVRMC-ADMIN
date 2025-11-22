@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Admin - Upload CSV</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: #eef2f7;
+      font-family: "Inter", Arial, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      /* min-height: 100vh; */
+      background-image: url('./5810381d-fa14-451a-aba2-1235784bf4f2.png');
+      background-size: cover;
+      backdrop-filter: blur(5px);
+      height: 100%;
+      background-attachment: fixed;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 480px;
+      background: #ffffff;
+      padding: 32px;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+      animation: fadeIn 0.4s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    h2, h3 {
+      margin: 0 0 20px;
+      color: #1f2937;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    input[type="text"],
+    input[type="password"],
+    input[type="file"] {
+      width: 100%;
+      padding: 12px;
+      margin-top: 10px;
+      border-radius: 10px;
+      border: 1px solid #d1d5db;
+      background: #f9fafb;
+      font-size: 15px;
+      transition: border 0.2s ease;
+    }
+
+    input:focus {
+      border-color: #2563eb;
+      outline: none;
+      background: #fff;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 16px;
+      background: #2563eb;
+      border: none;
+      border-radius: 10px;
+      color: #fff;
+      font-size: 16px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background 0.25s ease, transform 0.2s ease;
+    }
+
+    button:hover { background: #1e4fd3; transform: translateY(-2px); }
+    button:active { transform: scale(0.98); }
+
+    .message {
+      margin-top: 12px;
+      padding: 10px;
+      border-radius: 8px;
+      font-size: 14px;
+      display: none;
+    }
+    .success { background: #e0f7e9; color: #0f7b2e; }
+    .error   { background: #fde7e7; color: #b91c1c; }
+    .info    { background: #e5edff; color: #1e40af; }
+
+    #uploadSection {
+      margin-top: 30px;
+      border-top: 1px solid #e5e7eb;
+      padding-top: 25px;
+    }
+
+    img{
+    border: 2px solid black;
+    text-align: center;
+    height: 150px;
+    border-radius: 10px;
+}
+
+.clgbaner{
+    text-align: center;
+    margin: 10px;
+}
+
+  </style>
+</head>
+
+<body>
+  
+  
+  <div class="clgbaner">
+    <img src="./Group 1.png" alt="">
+  </div>
+  <div class="card">
+  
+    <h2>Admin Login</h2>
+
+    <input id="username" type="text" placeholder="Enter Username" />
+    <input id="password" type="password" placeholder="Enter Password" />
+    <button id="loginBtn">Login</button>
+    <div id="loginMsg" class="message"></div>
+
+    <!-- UPLOAD SECTION -->
+    <div id="uploadSection" style="display:none;">
+      <h3>Upload CSV File</h3>
+
+      <!-- NEW EXAM INFO FIELDS -->
+      <input id="exam_month_year" type="text" placeholder="Exam Month & Year (e.g., December-2024)" />
+      <input id="semester" type="text" placeholder="Semester (e.g., I Sem)" />
+      <input id="course" type="text" placeholder="Course (e.g., Comp. Appl)" />
+      <input id="exam_type" type="text" placeholder="Exam Type (e.g., REGULAR)" />
+
+      <input type="file" id="csvFile" accept=".csv" />
+
+      <button id="uploadBtn">Upload CSV</button>
+      <div id="uploadMsg" class="message"></div>
+    </div>
+  </div>
+
+  <script>
+    const loginBtn = document.getElementById('loginBtn');
+    const uploadSection = document.getElementById('uploadSection');
+    const loginMsg = document.getElementById('loginMsg');
+    const uploadMsg = document.getElementById('uploadMsg');
+
+    function showMessage(el, text, type) {
+      el.textContent = text;
+      el.className = "message " + type;
+      el.style.display = "block";
+    }
+
+    // ---------------- LOGIN -----------------
+    loginBtn.addEventListener('click', async () => {
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value.trim();
+
+      if (!username || !password)
+        return showMessage(loginMsg, "Please enter username and password", "error");
+
+      showMessage(loginMsg, "Logging in...", "info");
+
+      try {
+        const res = await fetch('http://localhost:5000/api/admin/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password })
+        });
+
+        const j = await res.json();
+
+        if (j.ok) {
+          showMessage(loginMsg, "Login successful!", "success");
+          uploadSection.style.display = 'block';
+        } else {
+          showMessage(loginMsg, j.msg || "Login failed", "error");
+        }
+
+      } catch {
+        showMessage(loginMsg, "Network error", "error");
+      }
+    });
+
+    // ---------------- FILE UPLOAD -----------------
+    document.getElementById('uploadBtn').addEventListener('click', async () => {
+      const file = document.getElementById('csvFile').files[0];
+
+      const exam_month_year = document.getElementById('exam_month_year').value.trim();
+      const semester = document.getElementById('semester').value.trim();
+      const course = document.getElementById('course').value.trim();
+      const exam_type = document.getElementById('exam_type').value.trim();
+
+      if (!file)
+        return showMessage(uploadMsg, "Please select a CSV file", "error");
+
+      if (!exam_month_year || !semester || !course || !exam_type)
+        return showMessage(uploadMsg, "Please enter all exam details", "error");
+
+      showMessage(uploadMsg, "Uploading...", "info");
+
+      const fd = new FormData();
+      fd.append("file", file);
+
+      // append exam_info fields
+      fd.append("exam_month_year", exam_month_year);
+      fd.append("semester", semester);
+      fd.append("course", course);
+      fd.append("exam_type", exam_type);
+
+      try {
+        const res = await fetch("http://localhost:5000/api/admin/upload", {
+          method: "POST",
+          body: fd
+        });
+
+        const j = await res.json();
+
+        if (j.ok) {
+          showMessage(uploadMsg, "CSV uploaded successfully!", "success");
+        } else {
+          showMessage(uploadMsg, "Error: " + (j.msg || ""), "error");
+        }
+      } catch {
+        showMessage(uploadMsg, "Network error", "error");
+      }
+    });
+  </script>
+
+</body>
+</html>
