@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8" />
   <title>Admin - Upload CSV</title>
@@ -37,11 +38,19 @@
     }
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to   { opacity: 1; transform: translateY(0); }
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
-    h2, h3 {
+    h2,
+    h3 {
       margin: 0 0 20px;
       color: #1f2937;
       font-weight: 600;
@@ -81,8 +90,14 @@
       transition: background 0.25s ease, transform 0.2s ease;
     }
 
-    button:hover { background: #1e4fd3; transform: translateY(-2px); }
-    button:active { transform: scale(0.98); }
+    button:hover {
+      background: #1e4fd3;
+      transform: translateY(-2px);
+    }
+
+    button:active {
+      transform: scale(0.98);
+    }
 
     .message {
       margin-top: 12px;
@@ -91,9 +106,21 @@
       font-size: 14px;
       display: none;
     }
-    .success { background: #e0f7e9; color: #0f7b2e; }
-    .error   { background: #fde7e7; color: #b91c1c; }
-    .info    { background: #e5edff; color: #1e40af; }
+
+    .success {
+      background: #e0f7e9;
+      color: #0f7b2e;
+    }
+
+    .error {
+      background: #fde7e7;
+      color: #b91c1c;
+    }
+
+    .info {
+      background: #e5edff;
+      color: #1e40af;
+    }
 
     #uploadSection {
       margin-top: 30px;
@@ -101,29 +128,28 @@
       padding-top: 25px;
     }
 
-    img{
-    border: 2px solid black;
-    text-align: center;
-    height: 150px;
-    border-radius: 10px;
-}
+    img {
+      border: 2px solid black;
+      text-align: center;
+      height: 150px;
+      border-radius: 10px;
+    }
 
-.clgbaner{
-    text-align: center;
-    margin: 10px;
-}
-
+    .clgbaner {
+      text-align: center;
+      margin: 10px;
+    }
   </style>
 </head>
 
 <body>
-  
-  
+
+
   <div class="clgbaner">
     <img src="./Group 1.png" alt="">
   </div>
   <div class="card">
-  
+
     <h2>Admin Login</h2>
 
     <input id="username" type="text" placeholder="Enter Username" />
@@ -136,10 +162,44 @@
       <h3>Upload CSV File</h3>
 
       <!-- NEW EXAM INFO FIELDS -->
-      <input id="exam_month_year" type="text" placeholder="Exam Month & Year (e.g., December-2024)" />
-      <input id="semester" type="text" placeholder="Semester (e.g., I Sem)" />
+      <select id="exam_month_year"
+        style="width:100%; padding:12px; margin-top:10px; border-radius:10px; border:1px solid #d1d5db; background:#f9fafb; font-size:15px;">
+        <option value="">Select Exam Month & Year</option>
+        <option>January-2025</option>
+        <option>February-2025</option>
+        <option>March-2025</option>
+        <option>April-2025</option>
+        <option>May-2025</option>
+        <option>June-2025</option>
+        <option>July-2025</option>
+        <option>August-2025</option>
+        <option>September-2025</option>
+        <option>October-2025</option>
+        <option>November-2025</option>
+        <option>December-2025</option>
+      </select>
+
+      <!-- <input id="semester" type="text" placeholder="Semester (e.g., I Sem)" /> -->
+      <select id="semester" style="width:100%; padding:12px; margin-top:10px; border-radius:10px; border:1px solid #d1d5db; background:#f9fafb; font-size:15px;">
+      <option value="">Select Semester</option>
+      <option>I Sem</option>
+      <option>II Sem</option>
+      <option>III Sem</option>
+      <option>IV Sem</option>
+      <option>V Sem</option>
+      <option>VI Sem</option>
+      <option>VII Sem</option>
+      <option>VIII Sem</option>
+    </select>
+
       <input id="course" type="text" placeholder="Course (e.g., Comp. Appl)" />
-      <input id="exam_type" type="text" placeholder="Exam Type (e.g., REGULAR)" />
+      <!-- <input id="exam_type" type="text" placeholder="Exam Type (e.g., REGULAR)" /> -->
+      <select id="exam_type"
+      style="width:100%; padding:12px; margin-top:10px; border-radius:10px; border:1px solid #d1d5db; background:#f9fafb; font-size:15px;">
+      <option value="">Select Exam Type</option>
+      <option>REGULAR</option>
+      <option>SUPPLY</option>
+    </select>
 
       <input type="file" id="csvFile" accept=".csv" />
 
@@ -237,4 +297,5 @@
   </script>
 
 </body>
+
 </html>
